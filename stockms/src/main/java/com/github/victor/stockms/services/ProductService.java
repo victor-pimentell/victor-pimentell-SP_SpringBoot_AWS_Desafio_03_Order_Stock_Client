@@ -8,9 +8,12 @@ import com.github.victor.stockms.web.dto.ProductQuantityDto;
 import com.github.victor.stockms.web.dto.ProductResponseDto;
 import com.github.victor.stockms.web.dto.mapper.ProductMapper;
 import com.github.victor.stockms.web.exceptions.ProductNotFoundException;
+import com.github.victor.stockms.web.exceptions.UniqueEntityException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,30 +25,33 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    public ProductResponseDto getProductById(Long id) {
-        Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product not found."));
-        return ProductMapper.toDto(product);
+    public Product getProductById(Long id) {
+        return productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product not found."));
     }
 
-    public ProductResponseDto createProduct(ProductCreateDto productCreateDto) {
-        Product product = productRepository.save(ProductMapper.toProduct(productCreateDto));
-        return ProductMapper.toDto(product);
+    public Product createProduct(ProductCreateDto productCreateDto) {
+        try {
+            return productRepository.save(ProductMapper.toProduct(productCreateDto));
+        } catch (DataIntegrityViolationException ex) {
+            throw new UniqueEntityException(
+                    String.format("Error: There is already a product with this name: %s", productCreateDto.getName()));
+        }
     }
 
-    public ProductResponseDto updateProductQuantity(ProductQuantityDto productQuantityDto) {
-        Product product = productRepository.findById(productQuantityDto.getId()).orElseThrow(() -> new ProductNotFoundException("Product not found."));
+    public Product updateProductQuantity(ProductQuantityDto productQuantityDto) {
+        Product product = getProductById(productQuantityDto.getId());
         product.setQuantity(productQuantityDto.getQuantity());
-        return ProductMapper.toDto(productRepository.save(product));
+        return productRepository.save(product);
     }
 
-    public ProductResponseDto updateProductName(ProductNameDto productNameDto) {
-        Product product = productRepository.findById(productNameDto.getId()).orElseThrow(() -> new ProductNotFoundException("Product not found."));
+    public Product updateProductName(ProductNameDto productNameDto) {
+        Product product = getProductById(productNameDto.getId());
         product.setName(productNameDto.getName());
-        return ProductMapper.toDto(productRepository.save(product));
+        return productRepository.save(product);
     }
 
-    public List<ProductResponseDto> getAll() {
-        List<Product> products = productRepository.findAll();
-        return ProductMapper.toListDto(products);
+    public Page<ProductResponseDto> getAll(Pageable pageable) {
+        Page<Product> productPage = productRepository.findAll(pageable);
+        return productPage.map(ProductMapper::toDto);
     }
 }
