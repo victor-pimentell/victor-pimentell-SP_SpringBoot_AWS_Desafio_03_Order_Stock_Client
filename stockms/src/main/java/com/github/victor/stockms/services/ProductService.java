@@ -7,6 +7,7 @@ import com.github.victor.stockms.web.dto.ProductNameDto;
 import com.github.victor.stockms.web.dto.ProductQuantityDto;
 import com.github.victor.stockms.web.dto.ProductResponseDto;
 import com.github.victor.stockms.web.dto.mapper.ProductMapper;
+import com.github.victor.stockms.web.exceptions.InsufficientStockException;
 import com.github.victor.stockms.web.exceptions.ProductNotFoundException;
 import com.github.victor.stockms.web.exceptions.UniqueEntityException;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.naming.InsufficientResourcesException;
 import java.util.List;
 
 @Slf4j
@@ -53,5 +55,29 @@ public class ProductService {
     public Page<ProductResponseDto> getAll(Pageable pageable) {
         Page<Product> productPage = productRepository.findAll(pageable);
         return productPage.map(ProductMapper::toDto);
+    }
+
+    public void updateProductsQuantities(List<Product> products) {
+        List<Long> idList = products.stream().map(Product::getId).toList();
+        List<Product> productList = productRepository.findAllById(idList);
+
+        if (productList.size() != products.size()) {
+            List<Long> productListIds = productList.stream().map(Product::getId).toList();
+            List<Long> idsNotFound = idList.stream().filter(id -> !productListIds.contains(id)).toList();
+
+            throw new ProductNotFoundException("Products with the following IDs were not found: " + idsNotFound);
+        }
+
+        for (int i = 0; i < productList.size(); i++) {
+            Product productOrder = products.get(i);
+            Product productStock = productList.get(i);
+
+            if (productOrder.getQuantity() > productStock.getQuantity()) {
+                throw new InsufficientStockException("Insufficient stock of the following product: " + productOrder.getName());
+            }
+
+            productStock.setQuantity(productStock.getQuantity() - productOrder.getQuantity());
+        }
+        productRepository.saveAll(productList);
     }
 }
