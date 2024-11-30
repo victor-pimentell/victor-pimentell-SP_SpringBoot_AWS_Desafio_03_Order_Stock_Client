@@ -4,7 +4,7 @@ import com.github.victor.orderms.entities.Order;
 import com.github.victor.orderms.services.OrderService;
 import com.github.victor.orderms.web.dto.OrderCreateDto;
 import com.github.victor.orderms.web.dto.OrderResponseDto;
-import com.github.victor.orderms.web.dto.OrderUpdateEmailDto;
+import com.github.victor.orderms.web.dto.UpdateEmailDto;
 import com.github.victor.orderms.web.dto.OrderUpdateProductsDto;
 import com.github.victor.orderms.web.dto.mapper.OrderMapper;
 import jakarta.validation.Valid;
@@ -66,7 +66,7 @@ public class OrderController {
     }
 
     @PutMapping("/email")
-    public ResponseEntity<OrderResponseDto> updateOrderEmail(@Valid @RequestBody OrderUpdateEmailDto orderUpdateEmailDto) {
+    public ResponseEntity<OrderResponseDto> updateOrderEmail(@Valid @RequestBody UpdateEmailDto orderUpdateEmailDto) {
         orderService.updateEmailOrder(orderUpdateEmailDto);
         return ResponseEntity.noContent().build();
     }

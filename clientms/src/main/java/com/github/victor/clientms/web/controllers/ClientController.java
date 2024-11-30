@@ -2,8 +2,7 @@ package com.github.victor.clientms.web.controllers;
 
 import com.github.victor.clientms.entities.Client;
 import com.github.victor.clientms.services.ClientService;
-import com.github.victor.clientms.web.dto.ClientCreateDto;
-import com.github.victor.clientms.web.dto.ClientResponseDto;
+import com.github.victor.clientms.web.dto.*;
 import com.github.victor.clientms.web.dto.mapper.ClientMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/clients")
@@ -48,7 +48,23 @@ public class ClientController {
         return ResponseEntity.created(location).body(responseDto);
     }
 
-    // TO-DO Email update on client -> order
+    @PutMapping
+    public ResponseEntity<ClientResponseDto> emailUpdate(@Valid @RequestBody UpdateEmailDto updateEmailDto) {
+        Client client = clientService.updateEmail(updateEmailDto);
+        ClientResponseDto responseDto = ClientMapper.toDto(client);
+        return ResponseEntity.ok(responseDto);
+    }
 
-    // TO-DO Get Orders of the client -> order
+    @PatchMapping
+    public ResponseEntity<ClientResponseDto> nameUpdate(@Valid @RequestBody ClientUpdateName clientUpdateName) {
+        Client client = clientService.clientUpdateName(clientUpdateName);
+        ClientResponseDto responseDto = ClientMapper.toDto(client);
+        return ResponseEntity.ok(responseDto);
+    }
+
+    @GetMapping("/orders/{email}")
+    public ResponseEntity<List<OrderResponseDto>> getOrdersByEmail(@PathVariable String email) {
+        List<OrderResponseDto> orders = clientService.getOrdersByEmail(email);
+        return ResponseEntity.ok(orders);
+    }
 }

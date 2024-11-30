@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderUpdateEmailDto {
+public class UpdateEmailDto {
 
     @Email(message = "please use a valid email format, example: john@example.com")
     @NotBlank(message = "the email must not be blank")

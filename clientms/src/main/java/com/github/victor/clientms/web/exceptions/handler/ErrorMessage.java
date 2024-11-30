@@ -1,6 +1,10 @@
 package com.github.victor.clientms.web.exceptions.handler;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import feign.FeignException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,6 +49,24 @@ public class ErrorMessage {
         this.statusText = status.getReasonPhrase();
         this.message = message;
         addErrors(result);
+    }
+
+    public ErrorMessage(HttpServletRequest request, HttpStatus status, String message, FeignException requestFeign) {
+        this.path = requestFeign.request().url();
+        this.method = requestFeign.request().httpMethod().name();
+        this.status = requestFeign.status();
+        try {
+            if (requestFeign.responseBody().isPresent()) {
+                byte[] byteBuffer = requestFeign.responseBody().get().array();
+                String response = new String(byteBuffer, StandardCharsets.UTF_8);;
+
+                JsonNode jsonNode = new ObjectMapper().readTree(response);
+
+                this.statusText = jsonNode.get("statusText").asText();
+                this.message = jsonNode.get("message").asText();
+            }
+        } catch (JsonProcessingException ignored) {
+        }
     }
 
     private void addErrors(BindingResult result) {
