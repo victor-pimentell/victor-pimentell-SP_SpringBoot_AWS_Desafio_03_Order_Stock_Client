@@ -21,4 +21,7 @@ public class Product {
     private String name;
 
     private Integer quantity;
+
+    @Column(unique = true)
+    private String hash;
 }

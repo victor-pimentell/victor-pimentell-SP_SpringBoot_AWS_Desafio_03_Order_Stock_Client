@@ -7,6 +7,7 @@ import com.github.victor.stockms.web.dto.ProductNameDto;
 import com.github.victor.stockms.web.dto.ProductQuantityDto;
 import com.github.victor.stockms.web.dto.ProductResponseDto;
 import com.github.victor.stockms.web.dto.mapper.ProductMapper;
+import com.github.victor.stockms.web.exceptions.ErrorCreatingHashException;
 import com.github.victor.stockms.web.exceptions.InsufficientStockException;
 import com.github.victor.stockms.web.exceptions.ProductNotFoundException;
 import com.github.victor.stockms.web.exceptions.UniqueEntityException;
@@ -18,7 +19,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.naming.InsufficientResourcesException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.HexFormat;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -33,7 +38,9 @@ public class ProductService {
 
     public Product createProduct(ProductCreateDto productCreateDto) {
         try {
-            return productRepository.save(ProductMapper.toProduct(productCreateDto));
+            Product product = ProductMapper.toProduct(productCreateDto);
+            product.setHash(generateHash(product.getName()));
+            return productRepository.save(product);
         } catch (DataIntegrityViolationException ex) {
             throw new UniqueEntityException(
                     String.format("Error: There is already a product with this name: %s", productCreateDto.getName()));
@@ -57,7 +64,7 @@ public class ProductService {
         return productPage.map(ProductMapper::toDto);
     }
 
-    public void updateProductsQuantities(List<Product> products) {
+    public void updateProductsQuantities2(List<Product> products) {
         List<Long> idList = products.stream().map(Product::getId).toList();
         List<Product> productList = productRepository.findAllById(idList);
 
@@ -79,5 +86,27 @@ public class ProductService {
             productStock.setQuantity(productStock.getQuantity() - productOrder.getQuantity());
         }
         productRepository.saveAll(productList);
+    }
+
+    public void updateProductsQuantities(List<Product> products) {
+        for (Product value : products) {
+            Optional<Product> productOptional = productRepository.findByHash(value.getHash());
+            if (productOptional.isPresent()) {
+                Product product = productOptional.get();
+                product.setQuantity(product.getQuantity() + value.getQuantity());
+                productRepository.save(product);
+            }
+        }
+    }
+
+    private String generateHash(String input) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hashBytes = digest.digest(input.getBytes());
+
+            return HexFormat.of().formatHex(hashBytes);
+        } catch (NoSuchAlgorithmException e) {
+            throw new ErrorCreatingHashException("Error creating hash");
+        }
     }
 }

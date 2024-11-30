@@ -3,6 +3,7 @@ package com.github.victor.orderms.web.dto.mapper;
 import com.github.victor.orderms.entities.Order;
 import com.github.victor.orderms.web.dto.OrderCreateDto;
 import com.github.victor.orderms.web.dto.OrderResponseDto;
+import com.github.victor.orderms.web.dto.OrderUpdateProductsDto;
 import org.modelmapper.ModelMapper;
 
 import java.util.List;
@@ -10,6 +11,10 @@ import java.util.List;
 public class OrderMapper {
 
     public static Order toOrder(OrderCreateDto dto) {
+        return new ModelMapper().map(dto, Order.class);
+    }
+
+    public static Order toOrder(OrderUpdateProductsDto dto) {
         return new ModelMapper().map(dto, Order.class);
     }
 

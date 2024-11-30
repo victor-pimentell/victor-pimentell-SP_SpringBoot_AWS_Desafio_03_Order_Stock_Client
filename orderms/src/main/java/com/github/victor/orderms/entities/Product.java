@@ -1,13 +1,10 @@
 package com.github.victor.orderms.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Entity
 @Getter
@@ -23,4 +20,6 @@ public class Product {
     private String name;
 
     private Integer quantity;
+
+    private String hash;
 }

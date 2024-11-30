@@ -1,5 +1,6 @@
 package com.github.victor.stockms.web.exceptions.handler;
 
+import com.github.victor.stockms.web.exceptions.ErrorCreatingHashException;
 import com.github.victor.stockms.web.exceptions.InsufficientStockException;
 import com.github.victor.stockms.web.exceptions.ProductNotFoundException;
 import com.github.victor.stockms.web.exceptions.UniqueEntityException;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.naming.InsufficientResourcesException;
+import java.security.NoSuchAlgorithmException;
 
 @Slf4j
 @RestControllerAdvice
@@ -49,5 +51,13 @@ public class GlobalExceptionsHandler {
                 .status(HttpStatus.CONFLICT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new ErrorMessage(request, HttpStatus.CONFLICT, ex.getMessage()));
+    }
+
+    @ExceptionHandler(ErrorCreatingHashException.class)
+    public ResponseEntity<ErrorMessage> noSuchAlgorithmException(ErrorCreatingHashException ex, HttpServletRequest request){
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request, HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage()));
     }
 }

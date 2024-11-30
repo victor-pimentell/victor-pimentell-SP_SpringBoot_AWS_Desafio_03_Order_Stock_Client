@@ -47,4 +47,8 @@ public class ClientController {
 
         return ResponseEntity.created(location).body(responseDto);
     }
+
+    // TO-DO Email update on client -> order
+
+    // TO-DO Get Orders of the client -> order
 }

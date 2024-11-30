@@ -4,6 +4,8 @@ import com.github.victor.orderms.entities.Order;
 import com.github.victor.orderms.services.OrderService;
 import com.github.victor.orderms.web.dto.OrderCreateDto;
 import com.github.victor.orderms.web.dto.OrderResponseDto;
+import com.github.victor.orderms.web.dto.OrderUpdateEmailDto;
+import com.github.victor.orderms.web.dto.OrderUpdateProductsDto;
 import com.github.victor.orderms.web.dto.mapper.OrderMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -47,5 +49,25 @@ public class OrderController {
                 .toUri();
 
         return ResponseEntity.created(location).body(responseDto);
+    }
+
+    @PutMapping
+    public ResponseEntity<OrderResponseDto> updateOrderProducts(@Valid @RequestBody OrderUpdateProductsDto orderUpdateProductsDto) {
+        Order order = orderService.orderUpdateProduct(orderUpdateProductsDto);
+        OrderResponseDto responseDto = OrderMapper.toDto(order);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(order.getId())
+                .toUri();
+
+        return ResponseEntity.ok(responseDto);
+    }
+
+    @PutMapping("/email")
+    public ResponseEntity<OrderResponseDto> updateOrderEmail(@Valid @RequestBody OrderUpdateEmailDto orderUpdateEmailDto) {
+        orderService.updateEmailOrder(orderUpdateEmailDto);
+        return ResponseEntity.noContent().build();
     }
 }
