@@ -7,7 +7,7 @@ import com.github.victor.orderms.infra.StockResourse;
 import com.github.victor.orderms.repositories.OrderRepository;
 import com.github.victor.orderms.repositories.ProductRepository;
 import com.github.victor.orderms.web.dto.OrderCreateDto;
-import com.github.victor.orderms.web.dto.OrderUpdateEmailDto;
+import com.github.victor.orderms.web.dto.UpdateEmailDto;
 import com.github.victor.orderms.web.dto.OrderUpdateProductsDto;
 import com.github.victor.orderms.web.dto.mapper.OrderMapper;
 import com.github.victor.orderms.web.exceptions.OrderNotFoundException;
@@ -69,7 +69,7 @@ public class OrderService {
         return orderRepository.save(update);
     }
 
-    public void updateEmailOrder(OrderUpdateEmailDto orderUpdateEmailDto) {
+    public void updateEmailOrder(UpdateEmailDto orderUpdateEmailDto) {
         List<Order> orderList = orderRepository.findAllByEmail(orderUpdateEmailDto.getOldEmail());
         orderList.stream().peek(order -> order.setEmail(orderUpdateEmailDto.getNewEmail())).toList();
         orderRepository.saveAll(orderList);

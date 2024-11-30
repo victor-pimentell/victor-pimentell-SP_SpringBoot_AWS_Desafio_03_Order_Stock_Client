@@ -2,6 +2,7 @@ package com.github.victor.clientms.web.exceptions.handler;
 
 import com.github.victor.clientms.web.exceptions.ClientNotFoundException;
 import com.github.victor.clientms.web.exceptions.UniqueEntityException;
+import feign.FeignException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -38,5 +39,13 @@ public class GlobalExceptionsHandler {
                 .status(HttpStatus.CONFLICT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new ErrorMessage(request, HttpStatus.CONFLICT, ex.getMessage()));
+    }
+
+    @ExceptionHandler(FeignException.class)
+    public ResponseEntity<ErrorMessage> clientNotFoundException(FeignException ex, HttpServletRequest request){
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request, HttpStatus.NOT_FOUND, ex.getMessage(), ex));
     }
 }
