@@ -36,6 +36,12 @@ public class ProductController {
         return ResponseEntity.ok(responseDto);
     }
 
+    @PutMapping
+    public ResponseEntity<Void> updateProductsQuantities(@RequestBody List<Product> products) {
+        productService.updateProductsQuantities(products);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping
     public ResponseEntity<Page<ProductResponseDto>> getAllProducts(@RequestParam(value = "page", defaultValue = "0") Integer page,
                                                                    @RequestParam(value = "limit", defaultValue = "12") Integer limit) {

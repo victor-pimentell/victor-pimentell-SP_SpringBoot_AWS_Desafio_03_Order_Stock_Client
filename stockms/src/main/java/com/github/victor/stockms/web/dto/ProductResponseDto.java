@@ -13,4 +13,5 @@ public class ProductResponseDto {
     private Long id;
     private String name;
     private Integer quantity;
+    private String hash;
 }

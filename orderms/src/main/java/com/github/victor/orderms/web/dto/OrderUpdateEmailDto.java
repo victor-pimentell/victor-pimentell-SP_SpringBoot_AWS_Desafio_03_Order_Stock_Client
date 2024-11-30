@@ -1,4 +1,4 @@
-package com.github.victor.clientms.web.dto;
+package com.github.victor.orderms.web.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -11,11 +11,13 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ClientCreateDto {
-    @NotBlank(message = "the name must not be blank")
-    private String name;
+public class OrderUpdateEmailDto {
 
     @Email(message = "please use a valid email format, example: john@example.com")
     @NotBlank(message = "the email must not be blank")
-    private String email;
+    private String oldEmail;
+
+    @Email(message = "please use a valid email format, example: john@example.com")
+    @NotBlank(message = "the email must not be blank")
+    private String newEmail;
 }

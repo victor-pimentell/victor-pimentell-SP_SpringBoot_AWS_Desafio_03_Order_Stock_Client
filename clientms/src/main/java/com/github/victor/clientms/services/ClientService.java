@@ -18,7 +18,7 @@ public class ClientService {
     private final ClientRepository clientRepository;
 
     public Client getClientByEmail(String email) {
-        return clientRepository.findByEmail(email).orElseThrow(() -> new ClientNotFoundException("Client not found"));
+        return clientRepository.findByEmail(email).orElseThrow(() -> new ClientNotFoundException(String.format("Error: There is no account registered with this email: %s", email)));
     }
 
     public Client getClientById(Long id) {

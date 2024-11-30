@@ -1,4 +1,4 @@
-package com.github.victor.stockms.entities;
+package com.github.victor.orderms.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,11 +17,9 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
     private String name;
 
     private Integer quantity;
 
-    @Column(unique = true)
     private String hash;
 }
