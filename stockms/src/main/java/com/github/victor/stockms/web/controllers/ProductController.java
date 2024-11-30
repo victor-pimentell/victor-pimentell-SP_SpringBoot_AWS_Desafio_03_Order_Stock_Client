@@ -2,6 +2,7 @@ package com.github.victor.stockms.web.controllers;
 
 import com.github.victor.stockms.entities.Product;
 import com.github.victor.stockms.services.ProductService;
+import com.github.victor.stockms.util.HateoasUtil;
 import com.github.victor.stockms.web.dto.ProductCreateDto;
 import com.github.victor.stockms.web.dto.ProductNameDto;
 import com.github.victor.stockms.web.dto.ProductQuantityDto;
@@ -32,7 +33,7 @@ public class ProductController {
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponseDto> getProductById(@PathVariable Long id) {
         Product product = productService.getProductById(id);
-        ProductResponseDto responseDto = ProductMapper.toDto(product);
+        ProductResponseDto responseDto = HateoasUtil.hateoasProductById(product);
         return ResponseEntity.ok(responseDto);
     }
 
@@ -53,7 +54,7 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<ProductResponseDto> createProduct(@Valid @RequestBody ProductCreateDto productCreateDto) {
         Product product = productService.createProduct(productCreateDto);
-        ProductResponseDto responseDto = ProductMapper.toDto(product);
+        ProductResponseDto responseDto = HateoasUtil.hateoasCreateProduct(product);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -77,5 +78,4 @@ public class ProductController {
         ProductResponseDto responseDto = ProductMapper.toDto(product);
         return ResponseEntity.ok(responseDto);
     }
-
 }

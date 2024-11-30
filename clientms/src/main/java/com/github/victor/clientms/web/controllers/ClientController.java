@@ -9,6 +9,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -36,7 +39,14 @@ public class ClientController {
     public ResponseEntity<ClientResponseDto> createClient(@Valid @RequestBody ClientCreateDto clientCreateDto) {
         Client client = clientService.createClient(clientCreateDto);
         ClientResponseDto responseDto = HateoasUtil.hateoesCreateClient(client);
-        return ResponseEntity.ok(responseDto);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(client.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(responseDto);
     }
 
     @PutMapping
