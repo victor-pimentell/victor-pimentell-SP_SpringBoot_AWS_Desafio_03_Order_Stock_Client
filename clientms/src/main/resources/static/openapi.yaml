@@ -1,0 +1,305 @@
+openapi: 3.0.1
+info:
+  title: REST API - Client Microservice
+  description: Microservice intended for clients management
+  version: v1
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
+tags:
+  - name: Clients
+    description: Contains all operations related to the client resource
+paths:
+  /api/v1/clients:
+    post:
+      tags:
+        - Clients
+      summary: Create a new client
+      description: 'Resource to create a new client. '
+      operationId: createClient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientCreateDto'
+        required: true
+      responses:
+        '201':
+          description: Client created successfully
+          headers:
+            Location:
+              description: URL of the created resource
+              style: simple
+              schema:
+                type: string
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ClientResponseDto'
+        '400':
+          description: Request not processed due to missing or invalid data
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '409':
+          description: Client already registered
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /api/v1/clients/name:
+    patch:
+      tags:
+        - Clients
+      summary: Update client's name
+      description: Resource to update an existing client's name.
+      operationId: nameUpdate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientUpdateName'
+        required: true
+      responses:
+        '200':
+          description: Client updated successfully
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ClientResponseDto'
+        '400':
+          description: Request not processed due to missing or invalid data
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '404':
+          description: Client not found
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /api/v1/clients/email:
+    patch:
+      tags:
+        - Clients
+      summary: Update client's Email
+      description: 'Resource to update an existing client''s email. It also updates client''s email in his orders through order microservice. '
+      operationId: emailUpdate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateEmailDto'
+        required: true
+      responses:
+        '200':
+          description: Client updated successfully
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ClientResponseDto'
+        '400':
+          description: Request not processed due to missing or invalid data
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '404':
+          description: Client not found
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /api/v1/clients/orders/{email}:
+    get:
+      tags:
+        - Clients
+      summary: Get client's orders by Email
+      description: Retrieve client's orders by Email through order microservice.
+      operationId: getOrdersByEmail
+      parameters:
+        - name: email
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Client's orders found and returned successfully
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/OrderResponseDto'
+        '404':
+          description: Orders not found
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /api/v1/clients/id/{id}:
+    get:
+      tags:
+        - Clients
+      summary: Get client by ID
+      description: Retrieve client details by ID.
+      operationId: getClientById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Client found and returned successfully
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ClientResponseDto'
+        '404':
+          description: Client not found
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /api/v1/clients/email/{email}:
+    get:
+      tags:
+        - Clients
+      summary: Get client by Email
+      description: Retrieve client details by Email.
+      operationId: getClientByEmail
+      parameters:
+        - name: email
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Client found and returned successfully
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ClientResponseDto'
+        '404':
+          description: Client not found
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+components:
+  schemas:
+    ClientResponseDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        email:
+          type: string
+        _links:
+          $ref: '#/components/schemas/Links'
+    Links:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/Link'
+    ErrorMessage:
+      type: object
+      properties:
+        path:
+          type: string
+        method:
+          type: string
+        status:
+          type: integer
+          format: int32
+        statusText:
+          type: string
+        message:
+          type: string
+        errors:
+          type: object
+          additionalProperties:
+            type: string
+    ClientCreateDto:
+      required:
+        - email
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+    ClientUpdateName:
+      required:
+        - email
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+    UpdateEmailDto:
+      required:
+        - newEmail
+        - oldEmail
+      type: object
+      properties:
+        oldEmail:
+          type: string
+        newEmail:
+          type: string
+    OrderResponseDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        email:
+          type: string
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+        _links:
+          $ref: '#/components/schemas/Links'
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        quantity:
+          type: integer
+          format: int32
+        hash:
+          type: string
+    Link:
+      type: object
+      properties:
+        href:
+          type: string
+        hreflang:
+          type: string
+        title:
+          type: string
+        type:
+          type: string
+        deprecation:
+          type: string
+        profile:
+          type: string
+        name:
+          type: string
+        templated:
+          type: boolean

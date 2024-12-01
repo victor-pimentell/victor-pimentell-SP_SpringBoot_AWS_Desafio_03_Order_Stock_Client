@@ -14,7 +14,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/clients")
+@RequestMapping("/api/v1/clients")
 @RequiredArgsConstructor
 public class ClientController {
 
