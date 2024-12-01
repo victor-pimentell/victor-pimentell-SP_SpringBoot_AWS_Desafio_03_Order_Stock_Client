@@ -23,7 +23,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/stock/products")
+@RequestMapping("/api/v1/stock/products")
 @RequiredArgsConstructor
 public class ProductController {
 
