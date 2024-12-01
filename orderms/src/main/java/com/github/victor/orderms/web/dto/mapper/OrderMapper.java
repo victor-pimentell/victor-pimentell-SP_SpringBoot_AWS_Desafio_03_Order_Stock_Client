@@ -25,4 +25,8 @@ public class OrderMapper {
     public static List<OrderResponseDto> toListDto(List<Order> orders){
         return orders.stream().map(OrderMapper::toDto).toList();
     }
+
+    public static OrderUpdateProductsDto toUpdateDto(Order order) {
+        return new ModelMapper().map(order, OrderUpdateProductsDto.class);
+    }
 }

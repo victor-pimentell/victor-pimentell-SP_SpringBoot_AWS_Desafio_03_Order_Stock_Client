@@ -76,6 +76,8 @@ public class OrderService {
     }
 
     public void deleteOrderById(Long id) {
+        Order order = getOrderById(id);
+        stockResourse.updateProductsQuantities(order.getProducts());
         orderRepository.deleteById(id);
     }
 }

@@ -1,0 +1,58 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+
+  clientms:
+    build:
+      context: ./clientms
+      dockerfile: Dockerfile
+    container_name: clientms
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+    depends_on:
+      - postgres
+
+  orderms:
+    build:
+      context: ./orderms
+      dockerfile: Dockerfile
+    container_name: orderms
+    ports:
+      - "8081:8081"
+    networks:
+      - app-network
+    depends_on:
+      - postgres
+
+  stockms:
+    build:
+      context: ./stockms
+      dockerfile: Dockerfile
+    container_name: stockms
+    ports:
+      - "8082:8082"
+    networks:
+      - app-network
+    depends_on:
+      - postgres
+
+networks:
+  app-network:
+    name: app-network
+    driver: bridge
+
+volumes:
+  postgres-data:

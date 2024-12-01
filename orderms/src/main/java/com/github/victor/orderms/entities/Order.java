@@ -22,7 +22,7 @@ public class Order {
 
     private String email;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "order_products",
             joinColumns = @JoinColumn(name = "order_id"),
