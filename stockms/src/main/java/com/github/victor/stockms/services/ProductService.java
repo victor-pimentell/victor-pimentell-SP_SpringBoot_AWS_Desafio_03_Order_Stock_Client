@@ -2,6 +2,7 @@ package com.github.victor.stockms.services;
 
 import com.github.victor.stockms.entities.Product;
 import com.github.victor.stockms.repositories.ProductRepository;
+import com.github.victor.stockms.util.HateoasUtil;
 import com.github.victor.stockms.web.dto.ProductCreateDto;
 import com.github.victor.stockms.web.dto.ProductNameDto;
 import com.github.victor.stockms.web.dto.ProductQuantityDto;
@@ -18,7 +19,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.naming.InsufficientResourcesException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HexFormat;
@@ -61,7 +61,7 @@ public class ProductService {
 
     public Page<ProductResponseDto> getAll(Pageable pageable) {
         Page<Product> productPage = productRepository.findAll(pageable);
-        return productPage.map(ProductMapper::toDto);
+        return productPage.map(HateoasUtil::hateoasOnlyId);
     }
 
     public void updateProductsQuantities2(List<Product> products) {

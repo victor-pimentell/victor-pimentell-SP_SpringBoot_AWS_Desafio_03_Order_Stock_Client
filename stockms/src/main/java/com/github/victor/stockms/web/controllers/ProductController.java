@@ -2,6 +2,7 @@ package com.github.victor.stockms.web.controllers;
 
 import com.github.victor.stockms.entities.Product;
 import com.github.victor.stockms.services.ProductService;
+import com.github.victor.stockms.util.HateoasUtil;
 import com.github.victor.stockms.web.dto.ProductCreateDto;
 import com.github.victor.stockms.web.dto.ProductNameDto;
 import com.github.victor.stockms.web.dto.ProductQuantityDto;
@@ -13,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -32,7 +32,7 @@ public class ProductController {
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponseDto> getProductById(@PathVariable Long id) {
         Product product = productService.getProductById(id);
-        ProductResponseDto responseDto = ProductMapper.toDto(product);
+        ProductResponseDto responseDto = HateoasUtil.hateoasOnlyList(product);
         return ResponseEntity.ok(responseDto);
     }
 
@@ -53,7 +53,7 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<ProductResponseDto> createProduct(@Valid @RequestBody ProductCreateDto productCreateDto) {
         Product product = productService.createProduct(productCreateDto);
-        ProductResponseDto responseDto = ProductMapper.toDto(product);
+        ProductResponseDto responseDto = HateoasUtil.hateoasListAndId(product);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -67,15 +67,14 @@ public class ProductController {
     @PatchMapping("/quantity")
     public ResponseEntity<ProductResponseDto> updateQuantity(@RequestBody ProductQuantityDto productQuantityDto) {
         Product product = productService.updateProductQuantity(productQuantityDto);
-        ProductResponseDto responseDto = ProductMapper.toDto(product);
+        ProductResponseDto responseDto = HateoasUtil.hateoasListAndId(product);
         return ResponseEntity.ok(responseDto);
     }
 
     @PatchMapping("/name")
     public ResponseEntity<ProductResponseDto> updateName(@RequestBody ProductNameDto productNameDto) {
         Product product = productService.updateProductName(productNameDto);
-        ProductResponseDto responseDto = ProductMapper.toDto(product);
+        ProductResponseDto responseDto = HateoasUtil.hateoasListAndId(product);
         return ResponseEntity.ok(responseDto);
     }
-
 }

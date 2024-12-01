@@ -2,6 +2,7 @@ package com.github.victor.orderms.web.controllers;
 
 import com.github.victor.orderms.entities.Order;
 import com.github.victor.orderms.services.OrderService;
+import com.github.victor.orderms.util.HateoasUtil;
 import com.github.victor.orderms.web.dto.OrderCreateDto;
 import com.github.victor.orderms.web.dto.OrderResponseDto;
 import com.github.victor.orderms.web.dto.UpdateEmailDto;
@@ -26,21 +27,21 @@ public class OrderController {
     @GetMapping("/id/{id}")
     public ResponseEntity<OrderResponseDto> getOrderById(@PathVariable Long id) {
         Order order = orderService.getOrderById(id);
-        OrderResponseDto responseDto = OrderMapper.toDto(order);
+        OrderResponseDto responseDto = HateoasUtil.hateoasEmailOrders(order);
         return ResponseEntity.ok(responseDto);
     }
 
     @GetMapping("/email/{email}")
     public ResponseEntity<List<OrderResponseDto>> getOrdersByEmail(@PathVariable String email) {
         List<Order> orders = orderService.getOrdersByEmail(email);
-        List<OrderResponseDto> responseDtos = OrderMapper.toListDto(orders);
+        List<OrderResponseDto> responseDtos = HateoasUtil.hateoasId(orders);
         return ResponseEntity.ok(responseDtos);
     }
 
     @PostMapping
     public ResponseEntity<OrderResponseDto> createOrder(@Valid @RequestBody OrderCreateDto orderCreateDto) {
         Order order = orderService.createOrder(orderCreateDto);
-        OrderResponseDto responseDto = OrderMapper.toDto(order);
+        OrderResponseDto responseDto = HateoasUtil.hateoasIdAndEmailOrders(order);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -54,14 +55,7 @@ public class OrderController {
     @PutMapping
     public ResponseEntity<OrderResponseDto> updateOrderProducts(@Valid @RequestBody OrderUpdateProductsDto orderUpdateProductsDto) {
         Order order = orderService.orderUpdateProduct(orderUpdateProductsDto);
-        OrderResponseDto responseDto = OrderMapper.toDto(order);
-
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(order.getId())
-                .toUri();
-
+        OrderResponseDto responseDto = HateoasUtil.hateoasIdAndEmailOrders(order);
         return ResponseEntity.ok(responseDto);
     }
 
