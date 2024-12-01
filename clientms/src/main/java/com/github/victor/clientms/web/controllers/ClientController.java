@@ -4,7 +4,6 @@ import com.github.victor.clientms.entities.Client;
 import com.github.victor.clientms.services.ClientService;
 import com.github.victor.clientms.util.HateoasUtil;
 import com.github.victor.clientms.web.dto.*;
-import com.github.victor.clientms.web.dto.mapper.ClientMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,21 +23,21 @@ public class ClientController {
     @GetMapping("/email/{email}")
     public ResponseEntity<ClientResponseDto> getClientByEmail(@PathVariable String email) {
         Client client = clientService.getClientByEmail(email);
-        ClientResponseDto responseDto = HateoasUtil.hateoasClientByEmail(client);
+        ClientResponseDto responseDto = HateoasUtil.hateoasIdAndEmailOrders(client);
         return ResponseEntity.ok(responseDto);
     }
 
     @GetMapping("/id/{id}")
     public ResponseEntity<ClientResponseDto> getClientById(@PathVariable Long id) {
         Client client = clientService.getClientById(id);
-        ClientResponseDto responseDto = HateoasUtil.hateoasClientById(client);
+        ClientResponseDto responseDto = HateoasUtil.hateoasEmailAndEmailOrders(client);
         return ResponseEntity.ok(responseDto);
     }
 
     @PostMapping
     public ResponseEntity<ClientResponseDto> createClient(@Valid @RequestBody ClientCreateDto clientCreateDto) {
         Client client = clientService.createClient(clientCreateDto);
-        ClientResponseDto responseDto = HateoasUtil.hateoesCreateClient(client);
+        ClientResponseDto responseDto = HateoasUtil.hateoasIdEmailAndEmailOrders(client);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -49,17 +48,17 @@ public class ClientController {
         return ResponseEntity.created(location).body(responseDto);
     }
 
-    @PutMapping
+    @PatchMapping("/email")
     public ResponseEntity<ClientResponseDto> emailUpdate(@Valid @RequestBody UpdateEmailDto updateEmailDto) {
         Client client = clientService.updateEmail(updateEmailDto);
-        ClientResponseDto responseDto = ClientMapper.toDto(client);
+        ClientResponseDto responseDto = HateoasUtil.hateoasIdEmailAndEmailOrders(client);
         return ResponseEntity.ok(responseDto);
     }
 
-    @PatchMapping
+    @PatchMapping("/name")
     public ResponseEntity<ClientResponseDto> nameUpdate(@Valid @RequestBody ClientUpdateName clientUpdateName) {
         Client client = clientService.clientUpdateName(clientUpdateName);
-        ClientResponseDto responseDto = ClientMapper.toDto(client);
+        ClientResponseDto responseDto = HateoasUtil.hateoasIdEmailAndEmailOrders(client);
         return ResponseEntity.ok(responseDto);
     }
 

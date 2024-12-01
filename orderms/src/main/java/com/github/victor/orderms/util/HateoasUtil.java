@@ -12,13 +12,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 public class HateoasUtil {
 
-    public static OrderResponseDto hateoasOrderById(Order input) {
+    public static OrderResponseDto hateoasEmailOrders(Order input) {
         OrderResponseDto output = OrderMapper.toDto(input);
         output.add(linkTo(methodOn(OrderController.class).getOrdersByEmail(input.getEmail())).withRel("order_list_by_email"));
         return output;
     }
 
-    public static List<OrderResponseDto> hateoasOrdersByEmail(List<Order> input) {
+    public static List<OrderResponseDto> hateoasId(List<Order> input) {
         List<OrderResponseDto> output = OrderMapper.toListDto(input);
         return output.stream()
                 .map(order ->
@@ -26,10 +26,10 @@ public class HateoasUtil {
                                 .getOrderById(order.getId())).withSelfRel())).toList();
     }
 
-    public static OrderResponseDto hateoasCreateOrder(Order input) {
+    public static OrderResponseDto hateoasIdAndEmailOrders(Order input) {
         OrderResponseDto output = OrderMapper.toDto(input);
         output.add(linkTo(methodOn(OrderController.class).getOrderById(input.getId())).withSelfRel());
-        output.add(linkTo(methodOn(OrderController.class).getOrdersByEmail(input.getEmail())).withRel("order_list_by_email"));
+        output.add(linkTo(methodOn(OrderController.class).getOrdersByEmail(output.getEmail())).withRel("order_list_by_email"));
         return output;
     }
 }

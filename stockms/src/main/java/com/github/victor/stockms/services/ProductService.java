@@ -19,7 +19,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.naming.InsufficientResourcesException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HexFormat;
@@ -62,7 +61,7 @@ public class ProductService {
 
     public Page<ProductResponseDto> getAll(Pageable pageable) {
         Page<Product> productPage = productRepository.findAll(pageable);
-        return productPage.map(HateoasUtil::hateoasAllProducts);
+        return productPage.map(HateoasUtil::hateoasOnlyId);
     }
 
     public void updateProductsQuantities2(List<Product> products) {

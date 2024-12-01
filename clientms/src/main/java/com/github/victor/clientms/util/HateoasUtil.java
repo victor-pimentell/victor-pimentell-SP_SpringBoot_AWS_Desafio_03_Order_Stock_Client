@@ -10,21 +10,21 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 public class HateoasUtil {
 
-    public static ClientResponseDto hateoasClientByEmail(Client input) {
+    public static ClientResponseDto hateoasIdAndEmailOrders(Client input) {
         ClientResponseDto output = ClientMapper.toDto(input);
         output.add(linkTo(methodOn(ClientController.class).getClientById(output.getId())).withSelfRel());
         output.add(linkTo(methodOn(ClientController.class).getOrdersByEmail(output.getEmail())).withRel("client_orders"));
         return output;
     }
 
-    public static ClientResponseDto hateoasClientById(Client input) {
+    public static ClientResponseDto hateoasEmailAndEmailOrders(Client input) {
         ClientResponseDto output = ClientMapper.toDto(input);
         output.add(linkTo(methodOn(ClientController.class).getClientByEmail(output.getEmail())).withSelfRel());
         output.add(linkTo(methodOn(ClientController.class).getOrdersByEmail(output.getEmail())).withRel("client_orders"));
         return output;
     }
 
-    public static ClientResponseDto hateoesCreateClient(Client input) {
+    public static ClientResponseDto hateoasIdEmailAndEmailOrders(Client input) {
         ClientResponseDto output = ClientMapper.toDto(input);
         output.add(linkTo(methodOn(ClientController.class).getClientById(output.getId())).withSelfRel());
         output.add(linkTo(methodOn(ClientController.class).getClientByEmail(output.getEmail())).withSelfRel());

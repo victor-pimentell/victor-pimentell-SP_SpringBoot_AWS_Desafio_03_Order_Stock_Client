@@ -10,22 +10,22 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 public class HateoasUtil {
 
-    public static ProductResponseDto hateoasProductById(Product input) {
+    public static ProductResponseDto hateoasOnlyList(Product input) {
         ProductResponseDto output = ProductMapper.toDto(input);
-        output.add(linkTo(methodOn(ProductController.class).getAllProducts(0, 12)).withRel("client_list"));
+        output.add(linkTo(methodOn(ProductController.class).getAllProducts(0, 12)).withRel("products_list"));
         return output;
     }
 
-    public static ProductResponseDto hateoasAllProducts(Product input) {
+    public static ProductResponseDto hateoasOnlyId(Product input) {
         ProductResponseDto output = ProductMapper.toDto(input);
         output.add(linkTo(methodOn(ProductController.class).getProductById(input.getId())).withSelfRel());
         return output;
     }
 
-    public static ProductResponseDto hateoasCreateProduct(Product input) {
+    public static ProductResponseDto hateoasListAndId(Product input) {
         ProductResponseDto output = ProductMapper.toDto(input);
         output.add(linkTo(methodOn(ProductController.class).getProductById(input.getId())).withSelfRel());
-        output.add(linkTo(methodOn(ProductController.class).getAllProducts(0, 12)).withRel("client_list"));
+        output.add(linkTo(methodOn(ProductController.class).getAllProducts(0, 12)).withRel("products_list"));
         return output;
     }
 }
