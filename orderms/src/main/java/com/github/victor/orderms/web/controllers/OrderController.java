@@ -2,6 +2,7 @@ package com.github.victor.orderms.web.controllers;
 
 import com.github.victor.orderms.entities.Order;
 import com.github.victor.orderms.services.OrderService;
+import com.github.victor.orderms.util.HateoasUtil;
 import com.github.victor.orderms.web.dto.OrderCreateDto;
 import com.github.victor.orderms.web.dto.OrderResponseDto;
 import com.github.victor.orderms.web.dto.UpdateEmailDto;
@@ -26,21 +27,21 @@ public class OrderController {
     @GetMapping("/id/{id}")
     public ResponseEntity<OrderResponseDto> getOrderById(@PathVariable Long id) {
         Order order = orderService.getOrderById(id);
-        OrderResponseDto responseDto = OrderMapper.toDto(order);
+        OrderResponseDto responseDto = HateoasUtil.hateoasOrderById(order);
         return ResponseEntity.ok(responseDto);
     }
 
     @GetMapping("/email/{email}")
     public ResponseEntity<List<OrderResponseDto>> getOrdersByEmail(@PathVariable String email) {
         List<Order> orders = orderService.getOrdersByEmail(email);
-        List<OrderResponseDto> responseDtos = OrderMapper.toListDto(orders);
+        List<OrderResponseDto> responseDtos = HateoasUtil.hateoasOrdersByEmail(orders);
         return ResponseEntity.ok(responseDtos);
     }
 
     @PostMapping
     public ResponseEntity<OrderResponseDto> createOrder(@Valid @RequestBody OrderCreateDto orderCreateDto) {
         Order order = orderService.createOrder(orderCreateDto);
-        OrderResponseDto responseDto = OrderMapper.toDto(order);
+        OrderResponseDto responseDto = HateoasUtil.hateoasCreateOrder(order);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -55,12 +56,6 @@ public class OrderController {
     public ResponseEntity<OrderResponseDto> updateOrderProducts(@Valid @RequestBody OrderUpdateProductsDto orderUpdateProductsDto) {
         Order order = orderService.orderUpdateProduct(orderUpdateProductsDto);
         OrderResponseDto responseDto = OrderMapper.toDto(order);
-
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(order.getId())
-                .toUri();
 
         return ResponseEntity.ok(responseDto);
     }
