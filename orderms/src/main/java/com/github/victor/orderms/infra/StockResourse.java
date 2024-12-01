@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@FeignClient(name = "stockms", url = "http://localhost:8082", path = "/stock/products")
+@FeignClient(name = "stockms", url = "http://localhost:8082", path = "/api/v1/stock/products")
 public interface StockResourse {
 
     @PutMapping

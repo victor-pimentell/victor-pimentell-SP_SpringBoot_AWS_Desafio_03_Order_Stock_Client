@@ -23,7 +23,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/stock/products")
+@RequestMapping("/api/v1/stock/products")
 @RequiredArgsConstructor
 public class ProductController {
 
@@ -76,5 +76,11 @@ public class ProductController {
         Product product = productService.updateProductName(productNameDto);
         ProductResponseDto responseDto = HateoasUtil.hateoasListAndId(product);
         return ResponseEntity.ok(responseDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProductById(@PathVariable Long id) {
+        productService.deleteProductById(id);
+        return ResponseEntity.noContent().build();
     }
 }

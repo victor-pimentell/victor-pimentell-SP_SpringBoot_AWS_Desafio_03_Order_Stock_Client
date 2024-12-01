@@ -14,7 +14,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/clients")
+@RequestMapping("/api/v1/clients")
 @RequiredArgsConstructor
 public class ClientController {
 
@@ -66,5 +66,11 @@ public class ClientController {
     public ResponseEntity<List<OrderResponseDto>> getOrdersByEmail(@PathVariable String email) {
         List<OrderResponseDto> orders = clientService.getOrdersByEmail(email);
         return ResponseEntity.ok(orders);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProductById(@PathVariable Long id) {
+        clientService.deleteProductById(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -64,30 +64,6 @@ public class ProductService {
         return productPage.map(HateoasUtil::hateoasOnlyId);
     }
 
-    public void updateProductsQuantities2(List<Product> products) {
-        List<Long> idList = products.stream().map(Product::getId).toList();
-        List<Product> productList = productRepository.findAllById(idList);
-
-        if (productList.size() != products.size()) {
-            List<Long> productListIds = productList.stream().map(Product::getId).toList();
-            List<Long> idsNotFound = idList.stream().filter(id -> !productListIds.contains(id)).toList();
-
-            throw new ProductNotFoundException("Products with the following IDs were not found: " + idsNotFound);
-        }
-
-        for (int i = 0; i < productList.size(); i++) {
-            Product productOrder = products.get(i);
-            Product productStock = productList.get(i);
-
-            if (productOrder.getQuantity() > productStock.getQuantity()) {
-                throw new InsufficientStockException("Insufficient stock of the following product: " + productOrder.getName());
-            }
-
-            productStock.setQuantity(productStock.getQuantity() - productOrder.getQuantity());
-        }
-        productRepository.saveAll(productList);
-    }
-
     public void updateProductsQuantities(List<Product> products) {
         for (Product value : products) {
             Optional<Product> productOptional = productRepository.findByHash(value.getHash());
@@ -108,5 +84,9 @@ public class ProductService {
         } catch (NoSuchAlgorithmException e) {
             throw new ErrorCreatingHashException("Error creating hash");
         }
+    }
+
+    public void deleteProductById(Long id) {
+        productRepository.deleteById(id);
     }
 }

@@ -18,7 +18,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/orders")
+@RequestMapping("/api/v1/orders")
 @RequiredArgsConstructor
 public class OrderController {
 
@@ -62,6 +62,12 @@ public class OrderController {
     @PutMapping("/email")
     public ResponseEntity<OrderResponseDto> updateOrderEmail(@Valid @RequestBody UpdateEmailDto orderUpdateEmailDto) {
         orderService.updateEmailOrder(orderUpdateEmailDto);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteOrderById(@PathVariable Long id) {
+        orderService.deleteOrderById(id);
         return ResponseEntity.noContent().build();
     }
 }

@@ -61,4 +61,8 @@ public class ClientService {
     public List<OrderResponseDto> getOrdersByEmail(String email) {
         return orderResourse.getOrdersByEmail(email).getBody();
     }
+
+    public void deleteProductById(Long id) {
+        clientRepository.deleteById(id);
+    }
 }
