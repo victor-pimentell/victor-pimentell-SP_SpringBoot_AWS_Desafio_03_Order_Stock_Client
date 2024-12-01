@@ -64,4 +64,10 @@ public class OrderController {
         orderService.updateEmailOrder(orderUpdateEmailDto);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteOrderById(@PathVariable Long id) {
+        orderService.deleteOrderById(id);
+        return ResponseEntity.noContent().build();
+    }
 }

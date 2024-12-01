@@ -194,6 +194,22 @@ paths:
             application/json;charset=UTF-8:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
+    delete:
+      tags:
+        - Stock
+      summary: Delete product by ID
+      description: Delete a product on the database by its ID.
+      operationId: deleteProductById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Product deleted successfully
 components:
   schemas:
     ErrorMessage:

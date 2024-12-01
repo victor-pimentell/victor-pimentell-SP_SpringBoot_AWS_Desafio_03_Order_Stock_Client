@@ -191,6 +191,23 @@ paths:
             application/json;charset=UTF-8:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
+  /api/v1/clients/{id}:
+    delete:
+      tags:
+        - Clients
+      summary: Delete client by ID
+      description: Delete a client on the database by its ID.
+      operationId: deleteProductById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Client deleted successfully
 components:
   schemas:
     ClientResponseDto:

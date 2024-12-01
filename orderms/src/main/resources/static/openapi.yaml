@@ -154,6 +154,23 @@ paths:
             application/json;charset=UTF-8:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
+  /api/v1/orders/{id}:
+    delete:
+      tags:
+        - Order
+      summary: Delete order by ID
+      description: Delete a order on the database by its ID.
+      operationId: deleteOrderById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Order deleted successfully
 components:
   schemas:
     ErrorMessage:

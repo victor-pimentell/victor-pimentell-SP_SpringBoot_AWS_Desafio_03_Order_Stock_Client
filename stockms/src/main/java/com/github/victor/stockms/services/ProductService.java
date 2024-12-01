@@ -85,4 +85,8 @@ public class ProductService {
             throw new ErrorCreatingHashException("Error creating hash");
         }
     }
+
+    public void deleteProductById(Long id) {
+        productRepository.deleteById(id);
+    }
 }

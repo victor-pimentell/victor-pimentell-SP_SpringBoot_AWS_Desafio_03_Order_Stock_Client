@@ -77,4 +77,10 @@ public class ProductController {
         ProductResponseDto responseDto = HateoasUtil.hateoasListAndId(product);
         return ResponseEntity.ok(responseDto);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProductById(@PathVariable Long id) {
+        productService.deleteProductById(id);
+        return ResponseEntity.noContent().build();
+    }
 }

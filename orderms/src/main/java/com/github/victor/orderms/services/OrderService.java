@@ -74,4 +74,8 @@ public class OrderService {
         orderList.stream().peek(order -> order.setEmail(orderUpdateEmailDto.getNewEmail())).toList();
         orderRepository.saveAll(orderList);
     }
+
+    public void deleteOrderById(Long id) {
+        orderRepository.deleteById(id);
+    }
 }

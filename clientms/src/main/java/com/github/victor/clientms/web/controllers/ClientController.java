@@ -67,4 +67,10 @@ public class ClientController {
         List<OrderResponseDto> orders = clientService.getOrdersByEmail(email);
         return ResponseEntity.ok(orders);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProductById(@PathVariable Long id) {
+        clientService.deleteProductById(id);
+        return ResponseEntity.noContent().build();
+    }
 }
