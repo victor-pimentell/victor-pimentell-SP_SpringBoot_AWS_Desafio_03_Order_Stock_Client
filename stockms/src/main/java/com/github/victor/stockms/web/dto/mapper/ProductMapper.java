@@ -17,8 +17,4 @@ public class ProductMapper {
     public static ProductResponseDto toDto(Product product) {
         return new ModelMapper().map(product, ProductResponseDto.class);
     }
-
-    public static List<ProductResponseDto> toListDto(List<Product> products){
-        return products.stream().map(ProductMapper::toDto).toList();
-    }
 }

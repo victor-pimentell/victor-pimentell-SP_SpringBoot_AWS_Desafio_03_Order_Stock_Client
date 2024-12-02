@@ -1,13 +1,8 @@
 package com.github.victor.clientms.services;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 import com.github.victor.clientms.entities.Client;
 import com.github.victor.clientms.infra.OrderResourse;
 import com.github.victor.clientms.repositories.ClientRepository;
-import com.github.victor.clientms.util.HateoasUtil;
-import com.github.victor.clientms.web.controllers.ClientController;
 import com.github.victor.clientms.web.dto.*;
 import com.github.victor.clientms.web.dto.mapper.ClientMapper;
 import com.github.victor.clientms.web.exceptions.ClientNotFoundException;
@@ -18,6 +13,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -30,12 +26,16 @@ public class ClientService {
     public Client getClientByEmail(String email) {
         log.info("Fetching client from database by email: {}", email);
 
-        return clientRepository.findByEmail(email).orElseThrow(() -> {
+        Optional<Client> client = clientRepository.findByEmail(email);
+
+        if (client.isPresent()) {
+            return client.get();
+        } else {
             log.warn("Client not found for email: {}", email);
 
-            return new ClientNotFoundException(
+            throw  new ClientNotFoundException(
                     String.format("Error: There is no account registered with this email: %s", email));
-        });
+        }
     }
 
     public Client getClientById(Long id) {
@@ -54,8 +54,6 @@ public class ClientService {
         try {
             Client client = ClientMapper.toClient(clientCreateDto);
             log.debug("Mapped Client entity: {}", client);
-
-            clientRepository.save(client);
             return clientRepository.save(client);
         } catch (DataIntegrityViolationException ex) {
             log.error("Failed to create client due to data integrity violation: {}", clientCreateDto.getEmail());

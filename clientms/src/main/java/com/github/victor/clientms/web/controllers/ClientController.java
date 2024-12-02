@@ -21,6 +21,7 @@ import java.util.List;
 public class ClientController {
 
     private final ClientService clientService;
+    private HateoasUtil hateoasUtil;
 
     @GetMapping("/email/{email}")
     public ResponseEntity<ClientResponseDto> getClientByEmail(@PathVariable String email) {
@@ -60,7 +61,7 @@ public class ClientController {
     public ResponseEntity<ClientResponseDto> emailUpdate(@Valid @RequestBody UpdateEmailDto updateEmailDto) {
         log.info("Request received to update email for client: {}", updateEmailDto);
         Client client = clientService.updateEmail(updateEmailDto);
-        ClientResponseDto responseDto = HateoasUtil.hateoasIdEmailAndEmailOrders(client);
+        ClientResponseDto responseDto = hateoasUtil.hateoasIdEmailAndEmailOrders(client);
         log.info("Returning updated client response: {}", responseDto);
         return ResponseEntity.ok(responseDto);
     }
