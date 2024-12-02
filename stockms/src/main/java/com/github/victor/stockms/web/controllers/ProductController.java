@@ -41,6 +41,7 @@ public class ProductController {
 
     @PutMapping
     public ResponseEntity<Void> updateProductsQuantities(@RequestBody List<Product> products) {
+        // Method used by the orderms, use this endpoint directly will return a wrong answer.
         log.info("Request received: update quantities for {} products.", products.size());
 
         productService.updateProductsQuantities(products);

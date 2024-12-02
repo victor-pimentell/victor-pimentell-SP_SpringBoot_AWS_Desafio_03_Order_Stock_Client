@@ -45,8 +45,6 @@ public class ProductIT {
         org.assertj.core.api.Assertions.assertThat(responseBody.getQuantity()).isEqualTo(2);
     }
 
-
-
     @Test
     @Sql(scripts = "/sql-product/DeleteDataInSQL.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "/sql-product/InsertDataInSQL.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)

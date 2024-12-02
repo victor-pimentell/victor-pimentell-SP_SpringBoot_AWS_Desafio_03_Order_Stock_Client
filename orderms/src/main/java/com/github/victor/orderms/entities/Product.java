@@ -1,6 +1,7 @@
 package com.github.victor.orderms.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.*;
 
 @Entity
@@ -17,6 +18,7 @@ public class Product {
 
     private String name;
 
+    @Min(1)
     private Integer quantity;
 
     private String hash;
