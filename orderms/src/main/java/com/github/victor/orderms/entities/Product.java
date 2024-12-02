@@ -1,14 +1,13 @@
 package com.github.victor.orderms.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.Min;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product {
@@ -19,6 +18,7 @@ public class Product {
 
     private String name;
 
+    @Min(1)
     private Integer quantity;
 
     private String hash;
