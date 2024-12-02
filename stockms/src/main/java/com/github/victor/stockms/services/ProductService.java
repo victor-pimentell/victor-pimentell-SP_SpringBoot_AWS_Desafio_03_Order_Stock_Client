@@ -8,8 +8,6 @@ import com.github.victor.stockms.web.dto.ProductNameDto;
 import com.github.victor.stockms.web.dto.ProductQuantityDto;
 import com.github.victor.stockms.web.dto.ProductResponseDto;
 import com.github.victor.stockms.web.dto.mapper.ProductMapper;
-import com.github.victor.stockms.web.exceptions.ErrorCreatingHashException;
-import com.github.victor.stockms.web.exceptions.InsufficientStockException;
 import com.github.victor.stockms.web.exceptions.ProductNotFoundException;
 import com.github.victor.stockms.web.exceptions.UniqueEntityException;
 import lombok.RequiredArgsConstructor;
@@ -50,7 +48,7 @@ public class ProductService {
             product.setHash(generateHash(product.getName()));
 
             return productRepository.save(product);
-        } catch (DataIntegrityViolationException ex) {
+        } catch (DataIntegrityViolationException | NoSuchAlgorithmException ex) {
             log.error("Product creation failed. Duplicate name: {}", productCreateDto.getName());
 
             throw new UniqueEntityException(
@@ -108,18 +106,13 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    private String generateHash(String input) {
-        try {
-            log.info("Generating hash for input: {}", input);
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hashBytes = digest.digest(input.getBytes());
+    private String generateHash(String input) throws NoSuchAlgorithmException {
+        log.info("Generating hash for input: {}", input);
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hashBytes = digest.digest(input.getBytes());
 
-            String hash = HexFormat.of().formatHex(hashBytes);
-            log.info("Hash generated successfully");
-            return hash;
-        } catch (NoSuchAlgorithmException e) {
-            log.error("Error generating hash for input: {}", input, e);
-            throw new ErrorCreatingHashException("Error creating hash");
-        }
+        String hash = HexFormat.of().formatHex(hashBytes);
+        log.info("Hash generated successfully");
+        return hash;
     }
 }
