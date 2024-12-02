@@ -1,9 +1,6 @@
 package com.github.victor.clientms.web.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
@@ -11,6 +8,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderResponseDto extends RepresentationModel<ClientResponseDto> implements Serializable {

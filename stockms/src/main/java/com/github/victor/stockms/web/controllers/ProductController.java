@@ -31,27 +31,38 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponseDto> getProductById(@PathVariable Long id) {
+        log.info("Request received: get product by ID: {}", id);
+
         Product product = productService.getProductById(id);
         ProductResponseDto responseDto = HateoasUtil.hateoasOnlyList(product);
+        log.info("Product retrieved successfully: {}", responseDto);
         return ResponseEntity.ok(responseDto);
     }
 
     @PutMapping
     public ResponseEntity<Void> updateProductsQuantities(@RequestBody List<Product> products) {
+        log.info("Request received: update quantities for {} products.", products.size());
+
         productService.updateProductsQuantities(products);
+        log.info("Product quantities updated successfully.");
         return ResponseEntity.noContent().build();
     }
+
 
     @GetMapping
     public ResponseEntity<Page<ProductResponseDto>> getAllProducts(@RequestParam(value = "page", defaultValue = "0") Integer page,
                                                                    @RequestParam(value = "limit", defaultValue = "12") Integer limit) {
+        log.info("Request received: get all products with pagination. Page: {}, Limit: {}", page, limit);
+
         Pageable pageable = PageRequest.of(page, limit);
         Page<ProductResponseDto> list = productService.getAll(pageable);
+        log.info("Successfully retrieved {} products for Page: {}", list.getNumberOfElements(), page);
         return ResponseEntity.ok(list);
     }
 
     @PostMapping
     public ResponseEntity<ProductResponseDto> createProduct(@Valid @RequestBody ProductCreateDto productCreateDto) {
+        log.info("Request received: create new product with name: {}", productCreateDto.getName());
         Product product = productService.createProduct(productCreateDto);
         ProductResponseDto responseDto = HateoasUtil.hateoasListAndId(product);
 
@@ -61,26 +72,36 @@ public class ProductController {
                 .buildAndExpand(product.getId())
                 .toUri();
 
+        log.info("Product created successfully with ID: {}", product.getId());
         return ResponseEntity.created(location).body(responseDto);
     }
 
     @PatchMapping("/quantity")
     public ResponseEntity<ProductResponseDto> updateQuantity(@RequestBody ProductQuantityDto productQuantityDto) {
+        log.info("Request received: update quantity for product with ID: {}", productQuantityDto.getId());
+
         Product product = productService.updateProductQuantity(productQuantityDto);
         ProductResponseDto responseDto = HateoasUtil.hateoasListAndId(product);
+        log.info("Product quantity updated successfully: {}", responseDto);
         return ResponseEntity.ok(responseDto);
     }
 
     @PatchMapping("/name")
     public ResponseEntity<ProductResponseDto> updateName(@RequestBody ProductNameDto productNameDto) {
+        log.info("Request received: update name for product with ID: {}", productNameDto.getId());
+
         Product product = productService.updateProductName(productNameDto);
         ProductResponseDto responseDto = HateoasUtil.hateoasListAndId(product);
+        log.info("Product name updated successfully for ID: {}", responseDto);
         return ResponseEntity.ok(responseDto);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProductById(@PathVariable Long id) {
+        log.info("Request received: delete product by ID: {}", id);
+
         productService.deleteProductById(id);
+        log.info("Product deleted successfully for ID: {}", id);
         return ResponseEntity.noContent().build();
     }
 }
