@@ -8,6 +8,7 @@ import com.github.victor.stockms.web.dto.ProductNameDto;
 import com.github.victor.stockms.web.dto.ProductQuantityDto;
 import com.github.victor.stockms.web.dto.ProductResponseDto;
 import com.github.victor.stockms.web.dto.mapper.ProductMapper;
+import com.github.victor.stockms.web.exceptions.InsufficientStockException;
 import com.github.victor.stockms.web.exceptions.ProductNotFoundException;
 import com.github.victor.stockms.web.exceptions.UniqueEntityException;
 import lombok.RequiredArgsConstructor;
@@ -81,12 +82,16 @@ public class ProductService {
     }
 
     public void updateProductsQuantities(List<Product> products) {
+        // Method used by the orderms, use this endpoint directly will return a wrong answer.
         log.info("Updating quantities for {} products", products.size());
 
         for (Product value : products) {
             Optional<Product> productOptional = productRepository.findByHash(value.getHash());
             if (productOptional.isPresent()) {
                 Product product = productOptional.get();
+                if (value.getQuantity() + product.getQuantity() < 0) {
+                    throw new InsufficientStockException("Insufficient stock of the following product: " + product.getName());
+                }
                 int newQuantity = product.getQuantity() + value.getQuantity();
                 product.setQuantity(newQuantity);
                 productRepository.save(product);

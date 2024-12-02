@@ -11,6 +11,7 @@ import com.github.victor.orderms.web.dto.UpdateEmailDto;
 import com.github.victor.orderms.web.dto.OrderUpdateProductsDto;
 import com.github.victor.orderms.web.dto.mapper.OrderMapper;
 import com.github.victor.orderms.web.exceptions.OrderNotFoundException;
+import com.github.victor.orderms.web.exceptions.ProductQuantityInvalidException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -71,9 +72,16 @@ public class OrderService {
         Order order = getOrderById(orderUpdateProductsDto.getId());
         Order update = OrderMapper.toOrder(orderUpdateProductsDto);
 
+        for (Product product: update.getProducts()) {
+            if (product.getQuantity() < 1) {
+                throw new ProductQuantityInvalidException("Quantity must be higher than zero.");
+            }
+        }
+
         log.debug("Updating product quantities in the order");
         for (int i = 0; i < order.getProducts().size(); i++) {
             Product productUpdate = update.getProducts().get(i);
+
             order.getProducts()
                     .stream()
                     .filter(p -> p.getHash().equals(productUpdate.getHash()))
@@ -109,7 +117,6 @@ public class OrderService {
 
         log.debug("Reverting stock quantities for products in the order");
         stockResourse.updateProductsQuantities(order.getProducts());
-
         orderRepository.deleteById(id);
     }
 }

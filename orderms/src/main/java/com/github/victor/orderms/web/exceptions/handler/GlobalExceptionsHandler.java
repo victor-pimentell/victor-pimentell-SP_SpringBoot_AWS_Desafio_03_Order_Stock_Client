@@ -1,14 +1,17 @@
 package com.github.victor.orderms.web.exceptions.handler;
 
 import com.github.victor.orderms.web.exceptions.OrderNotFoundException;
+import com.github.victor.orderms.web.exceptions.ProductQuantityInvalidException;
 import feign.FeignException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.TransactionSystemException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -57,4 +60,13 @@ public class GlobalExceptionsHandler {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new ErrorMessage(request, HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage()));
     }
+
+    @ExceptionHandler(ProductQuantityInvalidException.class)
+    public ResponseEntity<ErrorMessage> productQuantityInvalidException(ProductQuantityInvalidException ex, HttpServletRequest request){
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request, HttpStatus.BAD_REQUEST, ex.getMessage()));
+    }
+
 }

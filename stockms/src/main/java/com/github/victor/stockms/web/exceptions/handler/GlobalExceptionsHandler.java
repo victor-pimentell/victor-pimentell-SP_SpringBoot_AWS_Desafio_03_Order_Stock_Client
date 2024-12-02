@@ -1,5 +1,6 @@
 package com.github.victor.stockms.web.exceptions.handler;
 
+import com.github.victor.stockms.web.exceptions.InsufficientStockException;
 import com.github.victor.stockms.web.exceptions.ProductNotFoundException;
 import com.github.victor.stockms.web.exceptions.UniqueEntityException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,5 +39,13 @@ public class GlobalExceptionsHandler {
                 .status(HttpStatus.CONFLICT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new ErrorMessage(request, HttpStatus.CONFLICT, ex.getMessage()));
+    }
+
+    @ExceptionHandler(InsufficientStockException.class)
+    public ResponseEntity<ErrorMessage> insufficientStockException(InsufficientStockException ex, HttpServletRequest request){
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request, HttpStatus.BAD_REQUEST, ex.getMessage()));
     }
 }
