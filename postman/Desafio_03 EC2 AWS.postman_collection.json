@@ -1,0 +1,581 @@
+{
+	"info": {
+		"_postman_id": "e433c161-3b7f-464f-8839-0ae7b8e09912",
+		"name": "Desafio_03 EC2 AWS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39036359"
+	},
+	"item": [
+		{
+			"name": "StockMS",
+			"item": [
+				{
+					"name": "Create Product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"water\",\r\n    \"quantity\": 15\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://ec2-3-16-49-224.us-east-2.compute.amazonaws.com:8080/api/v1/stock/products",
+							"protocol": "http",
+							"host": [
+								"ec2-3-16-49-224",
+								"us-east-2",
+								"compute",
+								"amazonaws",
+								"com"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"stock",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetProductById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://ec2-3-16-49-224.us-east-2.compute.amazonaws.com:8080/api/v1/stock/products/1",
+							"protocol": "http",
+							"host": [
+								"ec2-3-16-49-224",
+								"us-east-2",
+								"compute",
+								"amazonaws",
+								"com"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"stock",
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllProducts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://ec2-3-16-49-224.us-east-2.compute.amazonaws.com:8080/api/v1/stock/products?page=0&limit=10",
+							"protocol": "http",
+							"host": [
+								"ec2-3-16-49-224",
+								"us-east-2",
+								"compute",
+								"amazonaws",
+								"com"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"stock",
+								"products"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateQuantity",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"quantity\": 25\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://ec2-3-16-49-224.us-east-2.compute.amazonaws.com:8080/api/v1/stock/products/quantity",
+							"protocol": "http",
+							"host": [
+								"ec2-3-16-49-224",
+								"us-east-2",
+								"compute",
+								"amazonaws",
+								"com"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"stock",
+								"products",
+								"quantity"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateName",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"Notebook\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://ec2-3-16-49-224.us-east-2.compute.amazonaws.com:8080/api/v1/stock/products/name",
+							"protocol": "http",
+							"host": [
+								"ec2-3-16-49-224",
+								"us-east-2",
+								"compute",
+								"amazonaws",
+								"com"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"stock",
+								"products",
+								"name"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteProductById",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://ec2-3-16-49-224.us-east-2.compute.amazonaws.com:8080/api/v1/stock/products/7",
+							"protocol": "http",
+							"host": [
+								"ec2-3-16-49-224",
+								"us-east-2",
+								"compute",
+								"amazonaws",
+								"com"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"stock",
+								"products",
+								"7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ClientMS",
+			"item": [
+				{
+					"name": "GetClientById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://ec2-3-141-42-56.us-east-2.compute.amazonaws.com:8080/api/v1/clients/id/1",
+							"protocol": "http",
+							"host": [
+								"ec2-3-141-42-56",
+								"us-east-2",
+								"compute",
+								"amazonaws",
+								"com"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"clients",
+								"id",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteClientById",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://ec2-3-141-42-56.us-east-2.compute.amazonaws.com:8080/api/v1/clients/2",
+							"protocol": "http",
+							"host": [
+								"ec2-3-141-42-56",
+								"us-east-2",
+								"compute",
+								"amazonaws",
+								"com"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"clients",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetOrdersByEmail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://ec2-3-141-42-56.us-east-2.compute.amazonaws.com:8080/api/v1/clients/orders/ash@example.com",
+							"protocol": "http",
+							"host": [
+								"ec2-3-141-42-56",
+								"us-east-2",
+								"compute",
+								"amazonaws",
+								"com"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"clients",
+								"orders",
+								"ash@example.com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetClientByEmail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://ec2-3-141-42-56.us-east-2.compute.amazonaws.com:8080/api/v1/clients/email/ash@example.com",
+							"protocol": "http",
+							"host": [
+								"ec2-3-141-42-56",
+								"us-east-2",
+								"compute",
+								"amazonaws",
+								"com"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"clients",
+								"email",
+								"ash@example.com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createClient",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"victor\",\r\n    \"email\": \"victor@example.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://ec2-3-141-42-56.us-east-2.compute.amazonaws.com:8080/api/v1/clients",
+							"protocol": "http",
+							"host": [
+								"ec2-3-141-42-56",
+								"us-east-2",
+								"compute",
+								"amazonaws",
+								"com"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateEmailClient",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"oldEmail\": \"ash@example.com\",\r\n    \"newEmail\": \"ash3@example.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://ec2-3-141-42-56.us-east-2.compute.amazonaws.com:8080/api/v1/clients/email",
+							"protocol": "http",
+							"host": [
+								"ec2-3-141-42-56",
+								"us-east-2",
+								"compute",
+								"amazonaws",
+								"com"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"clients",
+								"email"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateNameClient",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"ASH\",\r\n    \"email\": \"ash3@example.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://ec2-3-141-42-56.us-east-2.compute.amazonaws.com:8080/api/v1/clients/name",
+							"protocol": "http",
+							"host": [
+								"ec2-3-141-42-56",
+								"us-east-2",
+								"compute",
+								"amazonaws",
+								"com"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"clients",
+								"name"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "OrderMS",
+			"item": [
+				{
+					"name": "GetOrderById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://ec2-52-14-118-154.us-east-2.compute.amazonaws.com:8080/api/v1/orders/id/1",
+							"protocol": "http",
+							"host": [
+								"ec2-52-14-118-154",
+								"us-east-2",
+								"compute",
+								"amazonaws",
+								"com"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"orders",
+								"id",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetOrdersByEmail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://ec2-52-14-118-154.us-east-2.compute.amazonaws.com:8080/api/v1/orders/email/ash3@example.com",
+							"protocol": "http",
+							"host": [
+								"ec2-52-14-118-154",
+								"us-east-2",
+								"compute",
+								"amazonaws",
+								"com"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"orders",
+								"email",
+								"ash3@example.com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createOrder",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"ash3@example.com\",\r\n    \"products\": [\r\n        {\r\n            \"id\": 3,\r\n            \"name\": \"smartphone\",\r\n            \"quantity\": 2,\r\n            \"hash\": \"358aea9928a74643fe553a5981f1f15a4f243e8668fefb7a996e9ca179ea4de3\"\r\n        },\r\n        {\r\n            \"id\": 4,\r\n            \"name\": \"tv\",\r\n            \"quantity\": 2,\r\n            \"hash\": \"a46e5d2bbe2d3b05b2d28b6054d98c18046bce28893d04e050724168116d5587\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://ec2-52-14-118-154.us-east-2.compute.amazonaws.com:8080/api/v1/orders",
+							"protocol": "http",
+							"host": [
+								"ec2-52-14-118-154",
+								"us-east-2",
+								"compute",
+								"amazonaws",
+								"com"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateOrderProducts",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"products\": [\r\n        {\r\n            \"id\": 1,\r\n            \"name\": \"notebook\",\r\n            \"quantity\": 28,\r\n            \"hash\": \"2534e2de1dec24fedab4c00266b55ba9ba60dde03a349c5b5662189dd561ba9e\"\r\n        },\r\n        {\r\n            \"id\": 2,\r\n            \"name\": \"wallpaper\",\r\n            \"quantity\": 16,\r\n            \"hash\": \"124962dc269749b652c6e23e063617da6c15a4061ba980fc8f0b1ba77292415c\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://ec2-52-14-118-154.us-east-2.compute.amazonaws.com:8080/api/v1/orders",
+							"protocol": "http",
+							"host": [
+								"ec2-52-14-118-154",
+								"us-east-2",
+								"compute",
+								"amazonaws",
+								"com"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteOrderById",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://ec2-52-14-118-154.us-east-2.compute.amazonaws.com:8080/api/v1/orders/1",
+							"protocol": "http",
+							"host": [
+								"ec2-52-14-118-154",
+								"us-east-2",
+								"compute",
+								"amazonaws",
+								"com"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"orders",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
