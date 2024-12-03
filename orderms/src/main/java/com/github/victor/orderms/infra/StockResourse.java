@@ -12,5 +12,5 @@ import java.util.List;
 public interface StockResourse {
 
     @PutMapping
-    ResponseEntity<?> updateProductsQuantities(@RequestBody List<Product> products);
+    ResponseEntity<Void> updateProductsQuantities(@RequestBody List<Product> products);
 }
