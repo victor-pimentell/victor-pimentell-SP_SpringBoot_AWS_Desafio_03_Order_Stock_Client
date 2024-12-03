@@ -1,5 +1,6 @@
 package com.github.victor.orderms.infra;
 
+import com.github.victor.orderms.web.dto.ClientResponseDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,5 +10,5 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface ClientResourse {
 
     @GetMapping("/email/{email}")
-    ResponseEntity<?> getClientByEmail(@PathVariable String email);
+    ResponseEntity<ClientResponseDto> getClientByEmail(@PathVariable String email);
 }

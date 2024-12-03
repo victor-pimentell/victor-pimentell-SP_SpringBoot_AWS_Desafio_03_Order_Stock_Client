@@ -6,6 +6,7 @@ import com.github.victor.orderms.infra.ClientResourse;
 import com.github.victor.orderms.infra.StockResourse;
 import com.github.victor.orderms.repositories.OrderRepository;
 import com.github.victor.orderms.repositories.ProductRepository;
+import com.github.victor.orderms.web.dto.ClientResponseDto;
 import com.github.victor.orderms.web.dto.OrderCreateDto;
 import com.github.victor.orderms.web.dto.UpdateEmailDto;
 import com.github.victor.orderms.web.dto.OrderUpdateProductsDto;
