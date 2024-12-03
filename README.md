@@ -8,6 +8,10 @@ This repository contains three microservices built with **Spring Boot**, communi
 
 Each microservice has detailed endpoints to handle different functionalities.
 
+### Video showing instances running on AWS EC2
+
+https://youtu.be/SX-3JshoL8g
+
 ---
 
 ## Technologies Used
