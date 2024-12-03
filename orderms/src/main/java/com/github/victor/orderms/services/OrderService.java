@@ -54,7 +54,6 @@ public class OrderService {
         log.debug("Validating existence of client for email: {}", order.getEmail());
         clientResourse.getClientByEmail(order.getEmail()).getBody();
 
-        log.debug("Updating stock quantities for products in the order");
         order.getProducts().stream().peek(p -> p.setQuantity(p.getQuantity() * -1)).toList();
         stockResourse.updateProductsQuantities(order.getProducts());
 
