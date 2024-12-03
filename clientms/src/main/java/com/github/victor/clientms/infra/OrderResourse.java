@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@FeignClient(name = "orderms", url = "http://ec2-52-14-118-154.us-east-2.compute.amazonaws.com:8080", path = "/api/v1/orders")
+@FeignClient(name = "orderms", url = "http://orderms:8081", path = "/api/v1/orders")
 public interface OrderResourse {
 
     @PutMapping("/email")
